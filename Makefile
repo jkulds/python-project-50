@@ -15,12 +15,15 @@ test-coverage:
 	poetry run pytest --cov=gendiff  --cov-report xml
 
 test:
-	poetry run pytest tests/
+	poetry run pytest tests/ -v
 
 selfcheck:
 	poetry check
 
-check: selfcheck lint #test
+run:
+	poetry run gendiff tests/fixtures/file1.json tests/fixtures/file2.json
+
+check: selfcheck lint test
 
 build: check
 	poetry build

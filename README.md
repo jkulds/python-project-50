@@ -2,3 +2,6 @@
 [![Actions Status](https://github.com/jkulds/python-project-50/workflows/hexlet-check/badge.svg)](https://github.com/jkulds/python-project-50/actions)
 <a href="https://codeclimate.com/github/jkulds/python-project-50/maintainability"><img src="https://api.codeclimate.com/v1/badges/d67890b9dc584ca5b5e9/maintainability" /></a>
 <a href="https://codeclimate.com/github/jkulds/python-project-50/test_coverage"><img src="https://api.codeclimate.com/v1/badges/d67890b9dc584ca5b5e9/test_coverage" /></a>
+
+### Gendiff json files
+[Screencast demo](https://asciinema.org/a/Yxo0fK24JeD6MIehz3KK6sw55)
