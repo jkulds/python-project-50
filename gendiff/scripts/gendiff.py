@@ -34,19 +34,20 @@ def generate_diff(path1: str, path2: str) -> str:
     return '{\n' + '\n'.join(diffs) + '\n}'
 
 
-def fill_second(diffs, j1, j2):
-    for (k, v) in j2.items():
-        if k not in j1 or k in j1 and j1[k] != v:
+def fill_second(diffs, dict1, dict2):
+    for (k, v) in dict2.items():
+        if k not in dict1 or k in dict1 and dict1[k] != v:
             diffs.append(f"+ {k}: {str(v).lower()}")
 
 
-def fill_first(diffs, j1, j2):
-    for (k, v) in j1.items():
+def fill_first(diffs, dict1, dict2):
+    for (k, v) in dict1.items():
         s = ''
-        if k not in j2 or k in j2 and j2[k] != v:
+        if k not in dict2 or k in dict2 and dict2[k] != v:
             s = '-'
-        elif k in j2 and j2[k] == v:
+        elif k in dict2 and dict2[k] == v:
             s = ' '
+
         diffs.append(f"{s} {k}: {str(v).lower()}")
 
 
