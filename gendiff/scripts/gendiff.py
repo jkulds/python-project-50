@@ -40,14 +40,12 @@ def fill_second(diffs, dict1, dict2):
 
 
 def fill_first(diffs, dict1, dict2):
-    for (k, v) in dict1.items():
-        s = ''
-        if k not in dict2 or k in dict2 and dict2[k] != v:
+    for (key, value) in dict1.items():
+        s = ' '
+        if key not in dict2 or key in dict2 and dict2[key] != value:
             s = '-'
-        elif k in dict2 and dict2[k] == v:
-            s = ' '
 
-        diffs.append(f"{s} {k}: {str(v).lower()}")
+        diffs.append(f"{s} {key}: {str(value).lower()}")
 
 
 def sorted_dict(d: dict):
