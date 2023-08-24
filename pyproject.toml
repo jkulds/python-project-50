@@ -5,7 +5,7 @@ description = "json file differences generator"
 authors = ["jkulds <w84my5@yandex.ru>"]
 readme = "README.md"
 packages = [{include = "gendiff"}]
-repository = "https://github.com/jkulds/python-project-49"
+repository = "https://github.com/jkulds/python-project-50"
 classifiers = [
     "Topic :: Software Development :: Build Tools",
     "Topic :: Software Development :: Libraries :: Python Modules"

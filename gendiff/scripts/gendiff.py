@@ -11,27 +11,26 @@ def main():
     parser.add_argument('second_file', type=str)
     args = parser.parse_args()
 
-    diffs = generate_diff(args.first_file, args.second_file)
+    dict1 = get_sorted_dict_from_json(args.first_file)
+    dict2 = get_sorted_dict_from_json(args.second_file)
 
-    print(diffs)
+    diffs = generate_diff(dict1, dict2)
+
     return diffs
 
 
-if __name__ == '__main__':
-    main()
+def get_sorted_dict_from_json(path: str) -> dict:
+    result = json.load(open(path))
+    result = sorted_dict(result)
+    return result
 
 
-def generate_diff(path1: str, path2: str) -> str:
-    j1: dict = json.load(open(path1))
-    j2 = json.load(open(path2))
-    j1 = sorted_dict(j1)
-    j2 = sorted_dict(j2)
-    print(j1, j2)
+def generate_diff(dict1: dict, dict2: dict) -> str:
     diffs = []
-    fill_first(diffs, j1, j2)
-    fill_second(diffs, j1, j2)
+    fill_first(diffs, dict1, dict2)
+    fill_second(diffs, dict1, dict2)
 
-    return '{\n' + '\n'.join(diffs) + '\n}'
+    return '\n'.join(diffs)
 
 
 def fill_second(diffs, dict1, dict2):
@@ -53,3 +52,7 @@ def fill_first(diffs, dict1, dict2):
 
 def sorted_dict(d: dict):
     return dict(sorted(d.items(), key=lambda x: x[0]))
+
+
+if __name__ == '__main__':
+    main()
