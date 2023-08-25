@@ -26,8 +26,10 @@ def process_equal_keys(dict1, dict2):
     result = {}
     equals_keys = set(dict1) & set(dict2)
     for key in equals_keys:
-        if isinstance(dict1[key], dict) and isinstance(dict2[key], dict):
-            result[key] = (StateEnum.Children, generate_ast(dict1[key], dict2[key]))
+        is_dicts = isinstance(dict1[key], dict) and isinstance(dict2[key], dict)
+        if is_dicts:
+            dicts_ast = generate_ast(dict1[key], dict2[key])
+            result[key] = (StateEnum.Children, dicts_ast)
         elif dict1[key] == dict2[key]:
             result[key] = (StateEnum.Unchanged, dict1[key])
         else:
