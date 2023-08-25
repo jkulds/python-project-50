@@ -1,61 +1,59 @@
 import json
 
-from gendiff.cli import generate_diff
-from gendiff.parser import get_sorted_dict_from_path
+import pytest
+
+from gendiff.generate_diff import generate_diff
 
 FIXTURES_PATH = './tests/fixtures/'
+BIG1_JSON_PATH = FIXTURES_PATH + 'big1.json'
+BIG2_JSON_PATH = FIXTURES_PATH + 'big2.json'
 FIRST_JSON_PATH = FIXTURES_PATH + 'file1.json'
 SECOND_JSON_PATH = FIXTURES_PATH + 'file2.json'
-THIRD_JSON_PATH = FIXTURES_PATH + 'file3.json'
-FOURTH_JSON_PATH = FIXTURES_PATH + 'file4.json'
+EMPTY_JSON_PATH = FIXTURES_PATH + 'empty.json'
+
 FIRST_YAML_PATH = FIXTURES_PATH + 'data1.yaml'
 SECOND_YAML_PATH = FIXTURES_PATH + 'data2.yaml'
+BIG1_YML_PATH = FIXTURES_PATH + 'big1.yml'
+BIG2_YML_PATH = FIXTURES_PATH + 'big2.yml'
 FIRST_YML_PATH = FIXTURES_PATH + 'data1.yml'
 SECOND_YML_PATH = FIXTURES_PATH + 'data2.yml'
-EXPECTED1_FILE_PATH = FIXTURES_PATH + 'expected1.txt'
-EXPECTED2_FILE_PATH = FIXTURES_PATH + 'expected2.txt'
-EXPECTED3_FILE_PATH = FIXTURES_PATH + 'expected3.txt'
+
+EXPECTED_STYLISH_SMALL_FILE_PATH = FIXTURES_PATH + 'expected_stylish_small'
+EXPECTED_STYLISH_BIG_FILE_PATH = FIXTURES_PATH + 'expected_stylish_big'
+EXPECTED_STYLISH_EMPTY_FILE_PATH = FIXTURES_PATH + 'expected_stylish_empty'
+
+EXPECTED_PLAIN_FILE_PATH = FIXTURES_PATH + 'expected_plain'
+EXPECTED_PLAIN_BIG_FILE_PATH = FIXTURES_PATH + 'expected_plain_big'
+
+EXPECTED_JSON_SMALL_FILE_PATH = FIXTURES_PATH + 'expected_json_small'
+EXPECTED_JSON_BIG_FILE_PATH = FIXTURES_PATH + 'expected_big_small'
 
 
-def test_gendiff_correct_json():
-    diffs = generate_diff(FIRST_JSON_PATH, SECOND_JSON_PATH)
+@pytest.mark.parametrize("path1, path2, path_expected, out_format", [
+    pytest.param(FIRST_JSON_PATH, SECOND_JSON_PATH, EXPECTED_STYLISH_SMALL_FILE_PATH, "stylish"),
+    pytest.param(BIG1_JSON_PATH, BIG2_JSON_PATH, EXPECTED_STYLISH_BIG_FILE_PATH, "stylish"),
+    pytest.param(FIRST_JSON_PATH, EMPTY_JSON_PATH, EXPECTED_STYLISH_EMPTY_FILE_PATH, "stylish"),
+    pytest.param(FIRST_YAML_PATH, SECOND_YAML_PATH, EXPECTED_STYLISH_SMALL_FILE_PATH, "stylish"),
+    pytest.param(FIRST_YML_PATH, SECOND_YML_PATH, EXPECTED_STYLISH_SMALL_FILE_PATH, "stylish"),
+    pytest.param(BIG1_YML_PATH, BIG2_YML_PATH, EXPECTED_STYLISH_BIG_FILE_PATH, "stylish"),
+    pytest.param(FIRST_JSON_PATH, SECOND_JSON_PATH, EXPECTED_PLAIN_FILE_PATH, "plain"),
+    pytest.param(BIG1_JSON_PATH, BIG2_JSON_PATH, EXPECTED_PLAIN_BIG_FILE_PATH, "plain"),
+    pytest.param(BIG1_YML_PATH, BIG2_YML_PATH, EXPECTED_PLAIN_BIG_FILE_PATH, "plain"),
+    pytest.param(FIRST_YML_PATH, SECOND_YML_PATH, EXPECTED_PLAIN_FILE_PATH, "plain"),
+    pytest.param(FIRST_YAML_PATH, SECOND_YAML_PATH, EXPECTED_PLAIN_FILE_PATH, "plain")
+])
+def test_gendiff(path1: str, path2: str, path_expected: str, out_format: str):
+    diffs = generate_diff(path1, path2, out_format)
 
-    expected_file = open(EXPECTED1_FILE_PATH)
+    expected_file = open(path_expected)
     expected = expected_file.read()
 
     assert diffs == expected
 
 
-def test_gendiff_one_empty_json():
-    diffs = generate_diff(FIRST_JSON_PATH, FOURTH_JSON_PATH)
+def test_gendiff_json():
+    diffs = generate_diff(FIRST_JSON_PATH, EMPTY_JSON_PATH, 'json')
 
-    expected_file = open(EXPECTED3_FILE_PATH)
-    expected = expected_file.read()
-
-    assert diffs == expected
-
-
-def test_gendiff_correct_yaml():
-    diffs = generate_diff(FIRST_YAML_PATH, SECOND_YAML_PATH)
-
-    expected_file = open(EXPECTED1_FILE_PATH)
-    expected = expected_file.read()
-
-    assert diffs == expected
-
-
-def test_gendiff_correct_yml():
-    diffs = generate_diff(FIRST_YML_PATH, SECOND_YML_PATH)
-
-    expected_file = open(EXPECTED1_FILE_PATH)
-    expected = expected_file.read()
-
-    assert diffs == expected
-
-
-def test_sorted_dict():
-    d = json.load(open(FIRST_JSON_PATH))
-
-    d1 = get_sorted_dict_from_path(FIRST_JSON_PATH)
-
-    assert d1 == dict(sorted(d.items(), key=lambda x: x[0]))
+    assert isinstance(diffs, str)
+    assert len(diffs) > 0
+    assert isinstance(json.loads(diffs), dict)
