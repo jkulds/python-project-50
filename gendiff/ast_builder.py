@@ -5,16 +5,16 @@ def generate_ast(dict1: dict, dict2: dict) -> dict:
     dict1_keys = set(dict1)
     dict2_keys = set(dict2)
 
-    removed = dict1_keys - dict2_keys
-    added = dict2_keys - dict1_keys
+    removed_keys = dict1_keys - dict2_keys
+    added_keys = dict2_keys - dict1_keys
 
     result = {}
 
-    for i in removed:
-        result[i] = (StateEnum.Removed, dict1[i])
+    for key in removed_keys:
+        result[key] = (StateEnum.Removed, dict1[key])
 
-    for i in added:
-        result[i] = (StateEnum.Added, dict2[i])
+    for key in added_keys:
+        result[key] = (StateEnum.Added, dict2[key])
 
     equal_dict = process_equal_keys(dict1, dict2)
     result.update(equal_dict)
