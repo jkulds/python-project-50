@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from gendiff.generate_diff import generate_diff
+from gendiff.gendiff import generate_diff
 
 FIXTURES_PATH = './tests/fixtures/'
 BIG1_JSON_PATH = FIXTURES_PATH + 'big1.json'
