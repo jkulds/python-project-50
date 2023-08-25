@@ -7,7 +7,6 @@ def generate_ast(dict1: dict, dict2: dict) -> dict:
 
     removed = dict1_keys - dict2_keys
     added = dict2_keys - dict1_keys
-    equals = dict1_keys & dict2_keys
 
     result = {}
 
@@ -17,6 +16,15 @@ def generate_ast(dict1: dict, dict2: dict) -> dict:
     for i in added:
         result[i] = (StateEnum.Added, dict2[i])
 
+    equal_dict = process_equal_keys(dict1, dict2)
+    result.update(equal_dict)
+
+    return dict(sorted(result.items(), key=lambda x: x))
+
+
+def process_equal_keys(dict1, dict2):
+    result = {}
+    equals = set(dict1) & set(dict2)
     for i in equals:
         if isinstance(dict1[i], dict) and isinstance(dict2[i], dict):
             result[i] = (StateEnum.Children, generate_ast(dict1[i], dict2[i]))
@@ -24,5 +32,4 @@ def generate_ast(dict1: dict, dict2: dict) -> dict:
             result[i] = (StateEnum.Unchanged, dict1[i])
         else:
             result[i] = (StateEnum.Changed, dict1[i], dict2[i])
-
-    return dict(sorted(result.items(), key=lambda x: x))
+    return result
