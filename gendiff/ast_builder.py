@@ -24,12 +24,12 @@ def generate_ast(dict1: dict, dict2: dict) -> dict:
 
 def process_equal_keys(dict1, dict2):
     result = {}
-    equals = set(dict1) & set(dict2)
-    for i in equals:
-        if isinstance(dict1[i], dict) and isinstance(dict2[i], dict):
-            result[i] = (StateEnum.Children, generate_ast(dict1[i], dict2[i]))
-        elif dict1[i] == dict2[i]:
-            result[i] = (StateEnum.Unchanged, dict1[i])
+    equals_keys = set(dict1) & set(dict2)
+    for key in equals_keys:
+        if isinstance(dict1[key], dict) and isinstance(dict2[key], dict):
+            result[key] = (StateEnum.Children, generate_ast(dict1[key], dict2[key]))
+        elif dict1[key] == dict2[key]:
+            result[key] = (StateEnum.Unchanged, dict1[key])
         else:
-            result[i] = (StateEnum.Changed, dict1[i], dict2[i])
+            result[key] = (StateEnum.Changed, dict1[key], dict2[key])
     return result
