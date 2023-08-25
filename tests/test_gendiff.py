@@ -28,6 +28,14 @@ EXPECTED_PLAIN_BIG_FILE_PATH = FIXTURES_PATH + 'expected_plain_big'
 EXPECTED_JSON_SMALL_FILE_PATH = FIXTURES_PATH + 'expected_json_small'
 EXPECTED_JSON_BIG_FILE_PATH = FIXTURES_PATH + 'expected_big_small'
 
+CI_TEST_DATA_PATH = FIXTURES_PATH + 'ci_test_data/'
+CI_TEST_JSON1 = CI_TEST_DATA_PATH + "file1.json"
+CI_TEST_JSON2 = CI_TEST_DATA_PATH + "file2.json"
+CI_TEST_YML1 = CI_TEST_DATA_PATH + "file1.yml"
+CI_TEST_YML2 = CI_TEST_DATA_PATH + "file2.yml"
+CI_TEST_RESULT_PLAIN = CI_TEST_DATA_PATH + "result_plain"
+CI_TEST_RESULT_STYLISH = CI_TEST_DATA_PATH + "result_stylish"
+
 
 @pytest.mark.parametrize("path1, path2, path_expected, out_format", [
     pytest.param(FIRST_JSON_PATH, SECOND_JSON_PATH, EXPECTED_STYLISH_SMALL_FILE_PATH, "stylish"),
@@ -40,7 +48,11 @@ EXPECTED_JSON_BIG_FILE_PATH = FIXTURES_PATH + 'expected_big_small'
     pytest.param(BIG1_JSON_PATH, BIG2_JSON_PATH, EXPECTED_PLAIN_BIG_FILE_PATH, "plain"),
     pytest.param(BIG1_YML_PATH, BIG2_YML_PATH, EXPECTED_PLAIN_BIG_FILE_PATH, "plain"),
     pytest.param(FIRST_YML_PATH, SECOND_YML_PATH, EXPECTED_PLAIN_FILE_PATH, "plain"),
-    pytest.param(FIRST_YAML_PATH, SECOND_YAML_PATH, EXPECTED_PLAIN_FILE_PATH, "plain")
+    pytest.param(FIRST_YAML_PATH, SECOND_YAML_PATH, EXPECTED_PLAIN_FILE_PATH, "plain"),
+    pytest.param(CI_TEST_JSON1, CI_TEST_JSON2, CI_TEST_RESULT_PLAIN, "plain"),
+    pytest.param(CI_TEST_YML1, CI_TEST_YML2, CI_TEST_RESULT_PLAIN, "plain"),
+    pytest.param(CI_TEST_JSON1, CI_TEST_JSON2, CI_TEST_RESULT_STYLISH, "stylish"),
+    pytest.param(CI_TEST_YML1, CI_TEST_YML2, CI_TEST_RESULT_STYLISH, "stylish"),
 ])
 def test_gendiff(path1: str, path2: str, path_expected: str, out_format: str):
     diffs = generate_diff(path1, path2, out_format)
