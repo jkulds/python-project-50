@@ -1,5 +1,6 @@
 from gendiff.ast_builder import generate_ast
-from gendiff.formatters import stylish_formatter, json_formatter, plain_formatter
+from gendiff.formatters import stylish_formatter, \
+    json_formatter, plain_formatter
 from gendiff.parser import load_dict_from_path
 
 OUT_FORMATTER_BY_FORMAT = {
