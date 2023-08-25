@@ -41,14 +41,18 @@ def get_lines_from_ast(ast: dict, indent) -> str:
     return ''.join(result)
 
 
-def get_value_string(param, indent: int) -> str:
+def get_value_string(param, indent: int):
     if not isinstance(param, dict):
         if isinstance(param, bool):
             return str(param).lower()
-        elif isinstance(param, str) or param:
-            return param
-        else:
-            return 'null'
+
+        if isinstance(param, int) or isinstance(param, float):
+            return str(param)
+
+        if param is None:
+            return "null"
+
+        return f"{param}"
 
     blank = " " * (indent + 6)
     lines = []
